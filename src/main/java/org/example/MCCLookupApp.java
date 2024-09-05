@@ -9,14 +9,15 @@ import java.util.Scanner;
 
 public class MCCLookupApp {
 
-    private static final String FILE_PATH = "src/main/resources/Alfa.txt"; // Путь к файлу с данными
-    private static final String BANK_NAME = "Alfa"; // Название банка
+    private static final String ALFA_FILE_PATH = "src/main/resources/Alfa.txt";
+    private static final String TBANK_FILE_PATH = "src/main/resources/TBank.txt";
 
     public static void main(String[] args) {
-        // Читаем файл и загружаем данные в карту (категория -> список MCC кодов)
-        Map<String, String> mccCategoryMap = loadMCCData(FILE_PATH);
+        // Читаем файлы и загружаем данные в карты (категория -> список MCC кодов)
+        Map<String, String> mccCategoryMapAlfa = loadMCCData(ALFA_FILE_PATH);
+        Map<String, String> mccCategoryMapTBank = loadMCCData(TBANK_FILE_PATH);
 
-        if (mccCategoryMap == null) {
+        if (mccCategoryMapAlfa == null || mccCategoryMapTBank == null) {
             System.out.println("Не удалось загрузить данные.");
             return;
         }
@@ -39,13 +40,17 @@ public class MCCLookupApp {
                 int mccCode = Integer.parseInt(inputMCC);
 
                 // Поиск категории по MCC коду
-                String category = findCategoryByMCC(mccCategoryMap, mccCode);
+                String categoryAlfa = findCategoryByMCC(mccCategoryMapAlfa, mccCode);
+                String categoryTBank = findCategoryByMCC(mccCategoryMapTBank, mccCode);
 
                 // Вывод результата
-                if (category != null) {
-                    System.out.println("Банк: " + BANK_NAME);
-                    System.out.println("Категория: " + category);
-                } else {
+                if (categoryAlfa != null) {
+                    System.out.println("Банк: Alfa, Категория: " + categoryAlfa);
+                }
+                if (categoryTBank != null) {
+                    System.out.println("Банк: TBank, Категория: " + categoryTBank);
+                }
+                if (categoryAlfa == null && categoryTBank == null) {
                     System.out.println("Категория для MCC " + mccCode + " не найдена.");
                 }
             } catch (NumberFormatException e) {
@@ -99,8 +104,7 @@ public class MCCLookupApp {
                             if (mccCode >= start && mccCode <= end) {
                                 return category;
                             }
-                        } catch (NumberFormatException e) {
-                            System.out.println("Ошибка: Некорректный диапазон кодов: " + code);
+                        } catch (NumberFormatException ignored) {
                         }
                     }
                 } else {
@@ -110,8 +114,7 @@ public class MCCLookupApp {
                         if (mccCode == singleCode) {
                             return category;
                         }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Ошибка: Некорректный код: " + code);
+                    } catch (NumberFormatException ignored) {
                     }
                 }
             }
