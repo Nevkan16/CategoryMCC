@@ -85,11 +85,13 @@ public class MCCLookupApp {
     }
 
     // Метод для поиска категории по MCC коду
+    // Метод для поиска категории по MCC коду
     private static String findCategoryByMCC(Map<String, String> mccCategoryMap, int mccCode) {
         for (Map.Entry<String, String> entry : mccCategoryMap.entrySet()) {
             String category = entry.getKey();
             String mccCodes = entry.getValue();
-            String[] mccList = mccCodes.split(",\\s*"); // Разделяем MCC коды по запятой
+            // Разделяем MCC коды по запятой или точке с запятой
+            String[] mccList = mccCodes.split("[,;]\\s*");
 
             // Проверяем, есть ли искомый MCC код в списке
             for (String code : mccList) {
