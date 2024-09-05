@@ -11,13 +11,17 @@ public class MCCLookupApp {
 
     private static final String ALFA_FILE_PATH = "src/main/resources/Alfa.txt";
     private static final String TBANK_FILE_PATH = "src/main/resources/TBank.txt";
+    private static final String SBER_FILE_PATH = "src/main/resources/Sber.txt";
+    private static final String VTB_FILE_PATH = "src/main/resources/VTB.txt";
 
     public static void main(String[] args) {
         // Читаем файлы и загружаем данные в карты (категория -> список MCC кодов)
         Map<String, String> mccCategoryMapAlfa = loadMCCData(ALFA_FILE_PATH);
         Map<String, String> mccCategoryMapTBank = loadMCCData(TBANK_FILE_PATH);
+        Map<String, String> mccCategoryMapSber = loadMCCData(SBER_FILE_PATH);
+        Map<String, String> mccCategoryMapVtb = loadMCCData(VTB_FILE_PATH);
 
-        if (mccCategoryMapAlfa == null || mccCategoryMapTBank == null) {
+        if (mccCategoryMapAlfa == null || mccCategoryMapTBank == null || mccCategoryMapSber == null || mccCategoryMapVtb == null) {
             System.out.println("Не удалось загрузить данные.");
             return;
         }
@@ -42,15 +46,28 @@ public class MCCLookupApp {
                 // Поиск категории по MCC коду
                 String categoryAlfa = findCategoryByMCC(mccCategoryMapAlfa, mccCode);
                 String categoryTBank = findCategoryByMCC(mccCategoryMapTBank, mccCode);
+                String categorySber = findCategoryByMCC(mccCategoryMapSber, mccCode);
+                String categoryVtb = findCategoryByMCC(mccCategoryMapVtb, mccCode);
 
                 // Вывод результата
+                boolean found = false;
                 if (categoryAlfa != null) {
                     System.out.println("Банк: Alfa, Категория: " + categoryAlfa);
+                    found = true;
                 }
                 if (categoryTBank != null) {
                     System.out.println("Банк: TBank, Категория: " + categoryTBank);
+                    found = true;
                 }
-                if (categoryAlfa == null && categoryTBank == null) {
+                if (categorySber != null) {
+                    System.out.println("Банк: Sber, Категория: " + categorySber);
+                    found = true;
+                }
+                if (categoryVtb != null) {
+                    System.out.println("Банк: VTB, Категория: " + categoryVtb);
+                    found = true;
+                }
+                if (!found) {
                     System.out.println("Категория для MCC " + mccCode + " не найдена.");
                 }
             } catch (NumberFormatException e) {
@@ -85,19 +102,18 @@ public class MCCLookupApp {
     }
 
     // Метод для поиска категории по MCC коду
-    // Метод для поиска категории по MCC коду
     private static String findCategoryByMCC(Map<String, String> mccCategoryMap, int mccCode) {
         for (Map.Entry<String, String> entry : mccCategoryMap.entrySet()) {
             String category = entry.getKey();
             String mccCodes = entry.getValue();
-            // Разделяем MCC коды по запятой или точке с запятой
+            // Разделяем MCC коды по запятой и точке с запятой
             String[] mccList = mccCodes.split("[,;]\\s*");
 
             // Проверяем, есть ли искомый MCC код в списке
             for (String code : mccList) {
-                if (code.contains("-")) {
+                if (code.contains("-") || code.contains("–")) {
                     // Если код представлен диапазоном
-                    String[] range = code.replace(" ", "").split("-");
+                    String[] range = code.replace(" ", "").split("[–-]");
                     if (range.length == 2) {
                         try {
                             int start = Integer.parseInt(range[0]);
