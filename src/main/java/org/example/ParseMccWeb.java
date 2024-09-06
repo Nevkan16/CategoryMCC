@@ -38,9 +38,8 @@ public class ParseMccWeb {
                             mccCodes.append(mccLink.text());
                         }
 
-                        // Записать данные в файл
-                        writer.write(categoryName + "\n");
-                        writer.write(mccCodes.toString() + "\n\n");
+                        // Записать данные в файл в формате "Имя категория" табуляция и номера категория через запятую
+                        writer.write(categoryName + "\t" + mccCodes.toString() + "\n");
                     }
                 }
                 System.out.println("Файл успешно создан: " + fileName);
