@@ -25,6 +25,11 @@ public class PDFExtractor {
             // Открываем PDF-документ
             try (PDDocument document = PDDocument.load(tempFile.toFile())) {
                 PDFTextStripper pdfStripper = new PDFTextStripper();
+                pdfStripper.setSortByPosition(true);  // Сортировка текста по позициям для сохранения форматирования
+                pdfStripper.setParagraphStart("\n");  // Настройка начала параграфа
+                pdfStripper.setWordSeparator(" ");    // Настройка разделителя слов
+                pdfStripper.setLineSeparator("\n");   // Разделитель строк
+
                 String text = pdfStripper.getText(document);
 
                 // Записываем текст в файл
