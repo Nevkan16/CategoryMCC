@@ -24,40 +24,48 @@ public class MCCCodeExtractor {
 
     public static List<String> extractMCCCodes(String filePath) throws IOException {
         List<String> mccCodeLists = new ArrayList<>();
-        Pattern pattern = Pattern.compile("\\b\\d{4}(?:-\\d{4})?\\b"); // Регулярное выражение для поиска MCC-кодов
+        Pattern pattern = Pattern.compile("\\d{4}(?:-\\d{4})?"); // Обновленное регулярное выражение для поиска MCC-кодов
         StringBuilder currentMCCs = new StringBuilder();
+        boolean isPreviousLineEmpty = false; // Флаг для отслеживания пустой строки
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            boolean isPreviousLineEmpty = false;
 
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
 
                 if (line.isEmpty()) {
-                    // Пустая строка, добавляем текущие MCC-коды в список и сбрасываем
-                    if (currentMCCs.length() > 0) {
-                        mccCodeLists.add(currentMCCs.toString().trim());
-                        currentMCCs.setLength(0);
-                    }
+                    // Пустая строка
                     isPreviousLineEmpty = true;
-                } else {
-                    // Поиск MCC-кодов в строке
-                    Matcher matcher = pattern.matcher(line);
-                    if (matcher.find()) {
-                        if (currentMCCs.length() > 0 && !isPreviousLineEmpty) {
-                            currentMCCs.append(" ");
-                        }
-                        while (matcher.find()) {
-                            if (currentMCCs.length() > 0) {
-                                currentMCCs.append(" ");
-                            }
-                            currentMCCs.append(matcher.group());
-                        }
-                        isPreviousLineEmpty = false;
-                    } else {
-                        isPreviousLineEmpty = false;
+                    continue;
+                }
+
+                // Проверка: строка должна начинаться с буквы или цифры
+                char firstChar = line.charAt(0);
+                if (!Character.isLetter(firstChar) && !Character.isDigit(firstChar)) {
+                    // Строка не начинается с текста или цифры, пропускаем её
+                    isPreviousLineEmpty = false;
+                    continue;
+                }
+
+                // Строка начинается с текста и содержит MCC-коды
+                Matcher matcher = pattern.matcher(line);
+                if (!Character.isDigit(firstChar) && matcher.find()) {
+                    if (isPreviousLineEmpty && currentMCCs.length() > 0) {
+                        // Если перед строкой была пустая строка и есть накопленные MCC-коды
+                        mccCodeLists.add(currentMCCs.toString().trim());
+                        currentMCCs.setLength(0); // Очищаем текущие MCC-коды
                     }
+                    // Извлекаем MCC-коды из текущей строки
+                    extractMCCFromLine(line, pattern, currentMCCs);
+                    isPreviousLineEmpty = false;
+                } else if (Character.isDigit(firstChar)) {
+                    // Строка начинается с MCC-кода, извлекаем его
+                    extractMCCFromLine(line, pattern, currentMCCs);
+                    isPreviousLineEmpty = false;
+                } else {
+                    // Строка содержит только текст — пропускаем
+                    isPreviousLineEmpty = false;
                 }
             }
 
@@ -67,5 +75,16 @@ public class MCCCodeExtractor {
             }
         }
         return mccCodeLists;
+    }
+
+    // Вспомогательный метод для извлечения MCC-кодов из строки
+    private static void extractMCCFromLine(String line, Pattern pattern, StringBuilder currentMCCs) {
+        Matcher matcher = pattern.matcher(line);
+        while (matcher.find()) {
+            if (currentMCCs.length() > 0) {
+                currentMCCs.append(" ");
+            }
+            currentMCCs.append(matcher.group());
+        }
     }
 }

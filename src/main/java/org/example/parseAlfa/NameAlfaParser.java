@@ -58,8 +58,8 @@ public class NameAlfaParser {
 
     // Метод для вывода категорий
     public static void printCategories(List<String> categories) {
-        for (String category : categories) {
-            System.out.println(category);
+        for (int i = 0; i < categories.size(); i++) {
+            System.out.println((i + 1 ) + " " + categories.get(i));
         }
     }
 
@@ -73,7 +73,6 @@ public class NameAlfaParser {
 
             // Выводим категории
             printCategories(categories);
-            System.out.println(categories.size());
 
         } catch (IOException e) {
             e.printStackTrace();
