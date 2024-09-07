@@ -1,4 +1,4 @@
-package org.example.parse;
+package org.example.parseTbank;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

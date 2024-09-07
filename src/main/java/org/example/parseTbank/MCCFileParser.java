@@ -1,4 +1,4 @@
-package org.example.parse;
+package org.example.parseTbank;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -57,19 +57,19 @@ public class MCCFileParser {
             e.printStackTrace();
         }
     }
-}
 
-//    public static void main(String[] args) {
-//        String filePath = "MCC_New_Codes.txt"; // Укажите путь к вашему файлу
-//
-//        try {
-//            List<String> mccCodes = parseFile(filePath);
-//            for (String codes : mccCodes) {
-//                System.out.println(codes);
-//            }
-//            System.out.println("Total blocks: " + mccCodes.size());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//}
+
+    public static void main(String[] args) {
+        String filePath = "MCC_New_Codes.txt"; // Укажите путь к вашему файлу
+
+        try {
+            List<String> mccCodes = parseFile(filePath);
+            for (String codes : mccCodes) {
+                System.out.println(codes);
+            }
+            System.out.println("Total blocks: " + mccCodes.size());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

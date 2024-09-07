@@ -1,11 +1,11 @@
-package org.example.parse;
+package org.example.parseTbank;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import static org.example.parse.FirstNameCat.getFirstNameCategory;
+import static org.example.parseTbank.FirstNameCat.getFirstNameCategory;
 
 public class ContainW {
     public static void main(String[] args) throws IOException {
