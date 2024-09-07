@@ -1,4 +1,4 @@
-package org.example;
+package org.example.parseSberVtb;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -39,7 +39,7 @@ public class ParseMccWeb {
                         }
 
                         // Записать данные в файл в формате "Имя категория" табуляция и номера категория через запятую
-                        writer.write(categoryName + "\t" + mccCodes.toString() + "\n");
+                        writer.write(categoryName + "\t" + mccCodes + "\n");
                     }
                 }
                 System.out.println("Файл успешно создан: " + fileName);
