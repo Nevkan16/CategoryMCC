@@ -12,7 +12,7 @@ import java.nio.file.StandardCopyOption;
 public class PDFExtractor {
 
     public static void main(String[] args) {
-        String pdfUrl = "https://img-cdn.tinkoffjournal.ru/-/mcc_new_codes.pdf";
+        String pdfUrl = "https://alfabank.servicecdn.ru/marketing/22/47/marketing/vse_cat.pdf";
         String outputFilePath = "MCC_New_Codes.txt";
 
         try {

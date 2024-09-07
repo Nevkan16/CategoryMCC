@@ -7,11 +7,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FirstNameCat {
-    public static void getFirstNameCategory(String inputFilePath) {
+    static String category;
+    public static String getFirstNameCategory(String inputFilePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(inputFilePath))) {
 
             String line;
-            String category = null;
+
             StringBuilder mccCodes = new StringBuilder();
             boolean isCategoryLine = false;
 
@@ -26,7 +27,6 @@ public class FirstNameCat {
                     if (isCategoryLine) {
                         // Показываем первую категорию
                         if (mccCodes.length() > 0) {
-                            System.out.println(category);
                             break; // Завершаем выполнение после первой записи
                         }
                         isCategoryLine = false;
@@ -35,7 +35,6 @@ public class FirstNameCat {
                     // Строка с категорией
                     if (category != null && mccCodes.length() > 0) {
                         // Показываем предыдущую категорию
-                        System.out.println(category);
                         break; // Завершаем выполнение после первой записи
                     }
                     category = line;
@@ -52,5 +51,6 @@ public class FirstNameCat {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return category;
     }
 }
