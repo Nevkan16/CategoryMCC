@@ -32,6 +32,15 @@ public class PDFExtractor {
 
                 String text = pdfStripper.getText(document);
 
+                // Удаляем все запятые
+                text = text.replace(",", "");
+
+//                // Удаляем все пустые строки
+//                text = text.replaceAll("(?m)^[ \t]*\r?\n", "");
+
+                // Удаляем пробелы в конце каждой строки
+                text = text.replaceAll("(?m)[ \t]+$", "");
+
                 // Записываем текст в файл
                 Files.write(Path.of(outputFilePath), text.getBytes());
 

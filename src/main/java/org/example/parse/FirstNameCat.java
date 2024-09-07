@@ -1,4 +1,4 @@
-package org.example;
+package org.example.parse;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -6,10 +6,8 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MCCExtractor {
-    public static void main(String[] args) {
-        String inputFilePath = "MCC_New_Codes.txt"; // Замените на путь к вашему исходному файлу
-
+public class FirstNameCat {
+    public static void getFirstNameCategory(String inputFilePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(inputFilePath))) {
 
             String line;
@@ -26,7 +24,7 @@ public class MCCExtractor {
                 if (line.isEmpty()) {
                     // Пустая строка
                     if (isCategoryLine) {
-                        // Показываем первую категорию и её MCC коды
+                        // Показываем первую категорию
                         if (mccCodes.length() > 0) {
                             System.out.println(category);
                             break; // Завершаем выполнение после первой записи
@@ -36,7 +34,7 @@ public class MCCExtractor {
                 } else if (line.matches("^[А-Яа-яA-Za-z\\s]+$")) {
                     // Строка с категорией
                     if (category != null && mccCodes.length() > 0) {
-                        // Показываем предыдущую категорию и её MCC коды
+                        // Показываем предыдущую категорию
                         System.out.println(category);
                         break; // Завершаем выполнение после первой записи
                     }
