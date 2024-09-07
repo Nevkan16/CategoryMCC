@@ -3,9 +3,7 @@ package org.example;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class MCCLookupApp {
 
@@ -43,28 +41,28 @@ public class MCCLookupApp {
             try {
                 int mccCode = Integer.parseInt(inputMCC);
 
-                // Поиск категории по MCC коду
-                String categoryAlfa = findCategoryByMCC(mccCategoryMapAlfa, mccCode);
-                String categoryTBank = findCategoryByMCC(mccCategoryMapTBank, mccCode);
-                String categorySber = findCategoryByMCC(mccCategoryMapSber, mccCode);
-                String categoryVtb = findCategoryByMCC(mccCategoryMapVtb, mccCode);
+                // Поиск категорий по MCC коду
+                List<String> categoriesAlfa = findCategoriesByMCC(mccCategoryMapAlfa, mccCode);
+                List<String> categoriesTBank = findCategoriesByMCC(mccCategoryMapTBank, mccCode);
+                List<String> categoriesSber = findCategoriesByMCC(mccCategoryMapSber, mccCode);
+                List<String> categoriesVtb = findCategoriesByMCC(mccCategoryMapVtb, mccCode);
 
                 // Вывод результата
                 boolean found = false;
-                if (categoryAlfa != null) {
-                    System.out.println("Банк: Alfa, Категория: " + categoryAlfa);
+                if (!categoriesAlfa.isEmpty()) {
+                    System.out.println("Банк: Alfa, Категории: " + categoriesAlfa);
                     found = true;
                 }
-                if (categoryTBank != null) {
-                    System.out.println("Банк: TBank, Категория: " + categoryTBank);
+                if (!categoriesTBank.isEmpty()) {
+                    System.out.println("Банк: TBank, Категории: " + categoriesTBank);
                     found = true;
                 }
-                if (categorySber != null) {
-                    System.out.println("Банк: Sber, Категория: " + categorySber);
+                if (!categoriesSber.isEmpty()) {
+                    System.out.println("Банк: Sber, Категории: " + categoriesSber);
                     found = true;
                 }
-                if (categoryVtb != null) {
-                    System.out.println("Банк: VTB, Категория: " + categoryVtb);
+                if (!categoriesVtb.isEmpty()) {
+                    System.out.println("Банк: VTB, Категории: " + categoriesVtb);
                     found = true;
                 }
                 if (!found) {
@@ -101,8 +99,11 @@ public class MCCLookupApp {
         return mccCategoryMap;
     }
 
-    // Метод для поиска категории по MCC коду
-    private static String findCategoryByMCC(Map<String, String> mccCategoryMap, int mccCode) {
+    // Метод для поиска всех категорий по MCC коду
+    // Метод для поиска всех категорий по MCC коду
+    private static List<String> findCategoriesByMCC(Map<String, String> mccCategoryMap, int mccCode) {
+        List<String> categories = new ArrayList<>();
+
         for (Map.Entry<String, String> entry : mccCategoryMap.entrySet()) {
             String category = entry.getKey();
             String mccCodes = entry.getValue();
@@ -120,7 +121,7 @@ public class MCCLookupApp {
                             int end = Integer.parseInt(range[1]);
                             // Проверяем, попадает ли код в диапазон
                             if (mccCode >= start && mccCode <= end) {
-                                return category;
+                                categories.add(category);
                             }
                         } catch (NumberFormatException ignored) {
                         }
@@ -130,13 +131,14 @@ public class MCCLookupApp {
                     try {
                         int singleCode = Integer.parseInt(code);
                         if (mccCode == singleCode) {
-                            return category;
+                            categories.add(category);
                         }
                     } catch (NumberFormatException ignored) {
                     }
                 }
             }
         }
-        return null; // Категория не найдена
+
+        return categories;
     }
 }
