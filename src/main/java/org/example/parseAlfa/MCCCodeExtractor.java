@@ -24,9 +24,10 @@ public class MCCCodeExtractor {
 
     public static List<String> extractMCCCodes(String filePath) throws IOException {
         List<String> mccCodeLists = new ArrayList<>();
-        Pattern pattern = Pattern.compile("\\d{4}(?:-\\d{4})?"); // Обновленное регулярное выражение для поиска MCC-кодов
+        Pattern pattern = Pattern.compile("\\d{4}(?:-\\d{4})?"); // Регулярное выражение для поиска MCC-кодов
         StringBuilder currentMCCs = new StringBuilder();
         boolean isPreviousLineEmpty = false; // Флаг для отслеживания пустой строки
+        boolean isInMCCBlock = false; // Флаг для отслеживания MCC блока
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -35,8 +36,9 @@ public class MCCCodeExtractor {
                 line = line.trim();
 
                 if (line.isEmpty()) {
-                    // Пустая строка
+                    // Пустая строка: сбрасываем флаги
                     isPreviousLineEmpty = true;
+                    isInMCCBlock = false;
                     continue;
                 }
 
@@ -48,23 +50,31 @@ public class MCCCodeExtractor {
                     continue;
                 }
 
-                // Строка начинается с текста и содержит MCC-коды
                 Matcher matcher = pattern.matcher(line);
+
                 if (!Character.isDigit(firstChar) && matcher.find()) {
+                    // Если перед строкой была пустая строка и есть накопленные MCC-коды
                     if (isPreviousLineEmpty && currentMCCs.length() > 0) {
-                        // Если перед строкой была пустая строка и есть накопленные MCC-коды
                         mccCodeLists.add(currentMCCs.toString().trim());
                         currentMCCs.setLength(0); // Очищаем текущие MCC-коды
                     }
                     // Извлекаем MCC-коды из текущей строки
                     extractMCCFromLine(line, pattern, currentMCCs);
+                    isInMCCBlock = true;
                     isPreviousLineEmpty = false;
                 } else if (Character.isDigit(firstChar)) {
-                    // Строка начинается с MCC-кода, извлекаем его
+                    // Если строка начинается с MCC-кодов, продолжаем извлекать их
                     extractMCCFromLine(line, pattern, currentMCCs);
+                    isInMCCBlock = true;
                     isPreviousLineEmpty = false;
                 } else {
-                    // Строка содержит только текст — пропускаем
+                    // Если строка — это текст (например, описание)
+                    if (isInMCCBlock && currentMCCs.length() > 0) {
+                        // Если MCC блок завершился, добавляем накопленные MCC-коды
+                        mccCodeLists.add(currentMCCs.toString().trim());
+                        currentMCCs.setLength(0); // Очищаем перед следующим блоком
+                    }
+                    isInMCCBlock = false;
                     isPreviousLineEmpty = false;
                 }
             }
@@ -82,7 +92,7 @@ public class MCCCodeExtractor {
         Matcher matcher = pattern.matcher(line);
         while (matcher.find()) {
             if (currentMCCs.length() > 0) {
-                currentMCCs.append(" ");
+                currentMCCs.append(", ");
             }
             currentMCCs.append(matcher.group());
         }
