@@ -1,6 +1,5 @@
 package org.example;
 
-
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -8,9 +7,12 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MCCLookupBot extends TelegramLongPollingBot {
     private final String botUsername;
@@ -25,6 +27,8 @@ public class MCCLookupBot extends TelegramLongPollingBot {
     private final Map<String, String> mccCategoryMapTBank;
     private final Map<String, String> mccCategoryMapSber;
     private final Map<String, String> mccCategoryMapVtb;
+
+    private final Map<Long, UserSession> userSessions = new ConcurrentHashMap<>();
 
     public MCCLookupBot() {
         Properties properties = new Properties();
@@ -50,66 +54,78 @@ public class MCCLookupBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return botUsername; // Имя вашего бота
+        return botUsername;
     }
 
     @Override
     public String getBotToken() {
-        return botToken; // Замените на токен вашего бота
+        return botToken;
     }
 
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             String inputText = update.getMessage().getText().trim();
-            String chatId = update.getMessage().getChatId().toString();
+            Long chatId = update.getMessage().getChatId();
+            String username = update.getMessage().getFrom().getUserName();
+            LocalDateTime dateTime = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
-            // Проверяем, если пользователь ввел 'exit', чтобы остановить бота
-            if (inputText.equalsIgnoreCase("exit")) {
-                sendMessage(chatId, "Бот завершает работу. Для нового поиска запустите снова.");
-                return;
-            }
+            System.out.println("Time: " + formatter.format(dateTime) + " User: " +
+                    (username != null ? username : "Unknown") + " - Message: " + inputText);
 
-            try {
-                int mccCode = Integer.parseInt(inputText);
+            // Получаем или создаем новую сессию
+            UserSession userSession = userSessions.computeIfAbsent(chatId, k -> new UserSession());
 
-                // Поиск категорий по MCC коду
-                List<String> categoriesAlfa = MCCLookupApp.findCategoriesByMCC(mccCategoryMapAlfa, mccCode);
-                List<String> categoriesTBank = MCCLookupApp.findCategoriesByMCC(mccCategoryMapTBank, mccCode);
-                List<String> categoriesSber = MCCLookupApp.findCategoriesByMCC(mccCategoryMapSber, mccCode);
-                List<String> categoriesVtb = MCCLookupApp.findCategoriesByMCC(mccCategoryMapVtb, mccCode);
+            // Проверяем, если пользователь ввел '/start', чтобы начать сессию
+            if (inputText.equalsIgnoreCase("/start")) {
+                sendMessage(chatId, "Привет! Я бот, который показывает категории банков. Введите мсс код.");
+                userSession.setLastMessage(inputText);
+            } else {
+                try {
+                    int mccCode = Integer.parseInt(inputText);
 
-                // Формируем ответ
-                StringBuilder response = new StringBuilder();
+                    // Поиск категорий по MCC коду
+                    List<String> categoriesAlfa = MCCLookupApp.findCategoriesByMCC(mccCategoryMapAlfa, mccCode);
+                    List<String> categoriesTBank = MCCLookupApp.findCategoriesByMCC(mccCategoryMapTBank, mccCode);
+                    List<String> categoriesSber = MCCLookupApp.findCategoriesByMCC(mccCategoryMapSber, mccCode);
+                    List<String> categoriesVtb = MCCLookupApp.findCategoriesByMCC(mccCategoryMapVtb, mccCode);
 
-                if (!categoriesAlfa.isEmpty()) {
-                    response.append("Банк: Alfa, Категории: ").append(categoriesAlfa).append("\n");
+                    // Формируем ответ
+                    StringBuilder response = new StringBuilder();
+
+                    if (!categoriesAlfa.isEmpty()) {
+                        response.append("Банк: Alfa, Категории: ").append(categoriesAlfa).append("\n");
+                    }
+                    if (!categoriesTBank.isEmpty()) {
+                        response.append("Банк: TBank, Категории: ").append(categoriesTBank).append("\n");
+                    }
+                    if (!categoriesSber.isEmpty()) {
+                        response.append("Банк: Sber, Категории: ").append(categoriesSber).append("\n");
+                    }
+                    if (!categoriesVtb.isEmpty()) {
+                        response.append("Банк: VTB, Категории: ").append(categoriesVtb).append("\n");
+                    }
+                    if (response.length() == 0) {
+                        response.append("Категория для MCC ").append(mccCode).append(" не найдена.");
+                    }
+
+                    // Отправляем ответ пользователю
+                    sendMessage(chatId, response.toString());
+
+                    sendMessage(chatId, "Введите мсс код");
+                    userSession.setLastMessage(inputText);
+
+                } catch (NumberFormatException e) {
+                    sendMessage(chatId, "Ошибка: Введён некорректный MCC код. Попробуйте снова.");
                 }
-                if (!categoriesTBank.isEmpty()) {
-                    response.append("Банк: TBank, Категории: ").append(categoriesTBank).append("\n");
-                }
-                if (!categoriesSber.isEmpty()) {
-                    response.append("Банк: Sber, Категории: ").append(categoriesSber).append("\n");
-                }
-                if (!categoriesVtb.isEmpty()) {
-                    response.append("Банк: VTB, Категории: ").append(categoriesVtb).append("\n");
-                }
-                if (response.length() == 0) {
-                    response.append("Категория для MCC ").append(mccCode).append(" не найдена.");
-                }
-
-                // Отправляем ответ пользователю
-                sendMessage(chatId, response.toString());
-
-            } catch (NumberFormatException e) {
-                sendMessage(chatId, "Ошибка: Введён некорректный MCC код. Попробуйте снова.");
             }
         }
     }
 
-    private void sendMessage(String chatId, String text) {
+    private void sendMessage(Long chatId, String text) {
         SendMessage message = new SendMessage();
-        message.setChatId(chatId);
+        message.setChatId(chatId.toString());
         message.setText(text);
 
         try {
@@ -118,5 +134,11 @@ public class MCCLookupBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
-}
 
+    // Можно добавить метод для очистки старых сессий
+    private void cleanOldSessions() {
+        LocalDateTime now = LocalDateTime.now();
+        userSessions.entrySet().removeIf(entry ->
+                entry.getValue().getLastInteraction().isBefore(now.minusMinutes(30)));
+    }
+}
