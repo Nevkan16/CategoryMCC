@@ -8,8 +8,20 @@ import org.jsoup.select.Elements;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class ParseMccWeb {
+public class ParseVtbSber {
 
+    // Константы для URL и имен файлов
+    private static final String VTB_URL = "https://mcc-codes.ru/card/vtb-multikarta";
+    private static final String VTB_FILE = "MCC_VTB.txt";
+    private static final String SBER_URL = "https://mcc-codes.ru/card/spasibo-ot-sberbanka";
+    private static final String SBER_FILE = "MCC_Sber.txt";
+
+    /**
+     * Метод для парсинга страницы и сохранения данных о категориях и MCC-кодах в файл.
+     *
+     * @param url      URL страницы для парсинга
+     * @param fileName Имя файла, куда будут сохранены данные
+     */
     public void parseAndSave(String url, String fileName) {
         try {
             // Загрузка страницы
@@ -38,7 +50,7 @@ public class ParseMccWeb {
                             mccCodes.append(mccLink.text());
                         }
 
-                        // Записать данные в файл в формате "Имя категория" табуляция и номера категория через запятую
+                        // Записать данные в файл в формате "Имя категории" табуляция и номера категории через запятую
                         writer.write(categoryName + "\t" + mccCodes + "\n");
                     }
                 }
@@ -48,5 +60,18 @@ public class ParseMccWeb {
             System.out.println("Ошибка при парсинге сайта или создании файла.");
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Статический метод для парсинга MCC-кодов с двух страниц и сохранения данных в два файла.
+     */
+    public static void processSberVTBConcat() {
+        ParseVtbSber parser = new ParseVtbSber();
+
+        // Парсинг и сохранение данных для VTB
+        parser.parseAndSave(VTB_URL, VTB_FILE);
+
+        // Парсинг и сохранение данных для Сбербанка
+        parser.parseAndSave(SBER_URL, SBER_FILE);
     }
 }

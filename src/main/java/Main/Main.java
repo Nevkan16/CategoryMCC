@@ -1,6 +1,8 @@
 package Main;
 
+import org.example.DelFile.DeleteFile;
 import org.example.parseAlfa.ConcatAlfa;
+import org.example.parseSberVtb.ParseVtbSber;
 import org.example.parseTbank.ConcatTbank;
 import org.example.pdfExtract.PDFExtractor;
 
@@ -16,5 +18,10 @@ public class Main {
 
         String outTBankTxt = "MCC_TBank.txt"; // Путь к файлу, куда будет записан результат
         ConcatTbank.processTbankConcat(TBANK_PDF_TXT, outTBankTxt);
+
+        ParseVtbSber.processSberVTBConcat();
+
+        DeleteFile.deleteFile(ALFA_PDF_TXT);
+        DeleteFile.deleteFile(TBANK_PDF_TXT);
     }
 }
