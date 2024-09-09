@@ -5,12 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class MCCLookupApp {
+import static UpdateDataCategory.Constants.*;
 
-    private static final String ALFA_FILE_PATH = "MCC_ALFA.txt";
-    private static final String TBANK_FILE_PATH = "MCC_TBank.txt";
-    private static final String SBER_FILE_PATH = "MCC_Sber.txt";
-    private static final String VTB_FILE_PATH = "MCC_VTB.txt";
+public class MCCLookupApp {
 
     public static void main(String[] args) {
         // Читаем файлы и загружаем данные в карты (категория -> список MCC кодов)

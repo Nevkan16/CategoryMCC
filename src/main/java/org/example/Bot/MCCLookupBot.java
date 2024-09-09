@@ -15,15 +15,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static UpdateDataCategory.Constants.*;
+
 public class MCCLookupBot extends TelegramLongPollingBot {
     private final String botUsername;
     private final String botToken;
-
-    private static final String ALFA_FILE_PATH = "MCC_ALFA.txt";
-    private static final String TBANK_FILE_PATH = "MCC_TBank.txt";
-    private static final String SBER_FILE_PATH = "MCC_Sber.txt";
-    private static final String VTB_FILE_PATH = "MCC_VTB.txt";
-
     private final Map<String, String> mccCategoryMapAlfa;
     private final Map<String, String> mccCategoryMapTBank;
     private final Map<String, String> mccCategoryMapSber;
@@ -134,12 +130,5 @@ public class MCCLookupBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-    }
-
-    // Можно добавить метод для очистки старых сессий
-    private void cleanOldSessions() {
-        LocalDateTime now = LocalDateTime.now();
-        userSessions.entrySet().removeIf(entry ->
-                entry.getValue().getLastInteraction().isBefore(now.minusMinutes(30)));
     }
 }

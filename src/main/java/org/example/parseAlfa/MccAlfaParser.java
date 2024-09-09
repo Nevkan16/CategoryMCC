@@ -10,18 +10,6 @@ import java.util.regex.Pattern;
 
 public class MccAlfaParser {
 
-    public static void main(String[] args) {
-        String filePath = "AlfaNotFilterPDF.txt"; // Укажите путь к вашему файлу
-        try {
-            List<String> mccCodeLists = extractMCCCodes(filePath);
-            for (int i = 0; i < mccCodeLists.size(); i++) {
-                System.out.println("Элемент массива " + (i + 1) + ": " + mccCodeLists.get(i));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static List<String> extractMCCCodes(String filePath) throws IOException {
         List<String> mccCodeLists = new ArrayList<>();
         Pattern pattern = Pattern.compile("\\d{4}(?:-\\d{4})?"); // Регулярное выражение для поиска MCC-кодов

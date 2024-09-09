@@ -80,5 +80,4 @@ public class NameTBankParser {
         }
         return result;
     }
-
 }

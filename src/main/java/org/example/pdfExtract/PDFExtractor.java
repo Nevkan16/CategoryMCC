@@ -9,14 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
+import static UpdateDataCategory.Constants.*;
+
 public class PDFExtractor {
-
-    // Константы для ссылок на PDF-файлы и пути для сохранения
-    public static final String TBANK_PDF_URL = "https://img-cdn.tinkoffjournal.ru/-/mcc_new_codes.pdf";
-    public static final String TBANK_PDF_TXT = "tbankNotFilterPDF.txt";
-
-    public static final String ALFA_PDF_URL = "https://alfabank.servicecdn.ru/marketing/22/47/marketing/vse_cat.pdf";
-    public static final String ALFA_PDF_TXT = "AlfaNotFilterPDF.txt";
 
     /**
      * Метод для запуска процесса извлечения текстов из всех PDF-файлов.

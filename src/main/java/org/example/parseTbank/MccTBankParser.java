@@ -46,30 +46,4 @@ public class MccTBankParser {
 
         return mccList;
     }
-
-    public static void printMCC(String filePath) {
-        try {
-            List<String> parsedLines = parseFile(filePath);
-            for (String line : parsedLines) {
-                System.out.println(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public static void main(String[] args) {
-        String filePath = "tbankNotFilterPDF.txt"; // Укажите путь к вашему файлу
-
-        try {
-            List<String> mccCodes = parseFile(filePath);
-            for (String codes : mccCodes) {
-                System.out.println(codes);
-            }
-            System.out.println("Total blocks: " + mccCodes.size());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

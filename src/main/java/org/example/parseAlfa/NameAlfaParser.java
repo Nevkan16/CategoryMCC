@@ -54,28 +54,4 @@ public class NameAlfaParser {
 
         return categoryName.toString().trim(); // Возвращаем имя категории, удалив лишние пробелы
     }
-
-
-    // Метод для вывода категорий
-    public static void printCategories(List<String> categories) {
-        for (int i = 0; i < categories.size(); i++) {
-            System.out.println((i + 1 ) + " " + categories.get(i));
-        }
-    }
-
-    public static void main(String[] args) {
-        try {
-            // Укажите путь к файлу
-            String filePath = "AlfaNotFilterPDF.txt";
-
-            // Получаем список категорий
-            List<String> categories = extractCategoriesWithMCC(filePath);
-
-            // Выводим категории
-            printCategories(categories);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -8,13 +8,9 @@ import org.jsoup.select.Elements;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class ParseVtbSber {
+import static UpdateDataCategory.Constants.*;
 
-    // Константы для URL и имен файлов
-    private static final String VTB_URL = "https://mcc-codes.ru/card/vtb-multikarta";
-    private static final String VTB_FILE = "MCC_VTB.txt";
-    private static final String SBER_URL = "https://mcc-codes.ru/card/spasibo-ot-sberbanka";
-    private static final String SBER_FILE = "MCC_Sber.txt";
+public class ParseVtbSber {
 
     /**
      * Метод для парсинга страницы и сохранения данных о категориях и MCC-кодах в файл.
@@ -69,9 +65,9 @@ public class ParseVtbSber {
         ParseVtbSber parser = new ParseVtbSber();
 
         // Парсинг и сохранение данных для VTB
-        parser.parseAndSave(VTB_URL, VTB_FILE);
+        parser.parseAndSave(VTB_URL, VTB_FILE_PATH);
 
         // Парсинг и сохранение данных для Сбербанка
-        parser.parseAndSave(SBER_URL, SBER_FILE);
+        parser.parseAndSave(SBER_URL, SBER_FILE_PATH);
     }
 }

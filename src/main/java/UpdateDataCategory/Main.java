@@ -6,18 +6,16 @@ import org.example.parseSberVtb.ParseVtbSber;
 import org.example.parseTbank.ConcatTbank;
 import org.example.pdfExtract.PDFExtractor;
 
-import static org.example.pdfExtract.PDFExtractor.ALFA_PDF_TXT;
-import static org.example.pdfExtract.PDFExtractor.TBANK_PDF_TXT;
+import static UpdateDataCategory.Constants.*;
+
 
 public class Main {
     public static void main(String[] args) {
         PDFExtractor.processAllPdfs(); // получаем pdf для alfa и TBANK
 
-        String outAlfaTxt = "MCC_ALFA.txt"; // Путь к файлу, куда будет записан результат
-        ConcatAlfa.processAlfaConcat(ALFA_PDF_TXT, outAlfaTxt);
+        ConcatAlfa.processAlfaConcat(ALFA_PDF_TXT, ALFA_FILE_PATH);
 
-        String outTBankTxt = "MCC_TBank.txt"; // Путь к файлу, куда будет записан результат
-        ConcatTbank.processTbankConcat(TBANK_PDF_TXT, outTBankTxt);
+        ConcatTbank.processTbankConcat(TBANK_PDF_TXT, TBANK_FILE_PATH);
 
         ParseVtbSber.processSberVTBConcat();
 
