@@ -12,11 +12,11 @@ import java.nio.file.StandardCopyOption;
 public class PDFExtractor {
 
     // Константы для ссылок на PDF-файлы и пути для сохранения
-    public static final String TINKOFF_PDF_URL = "https://img-cdn.tinkoffjournal.ru/-/mcc_new_codes.pdf";
-    public static final String TINKOFF_OUTPUT_PATH = "tbankNotFilterPDF.txt";
+    public static final String TBANK_PDF_URL = "https://img-cdn.tinkoffjournal.ru/-/mcc_new_codes.pdf";
+    public static final String TBANK_PDF_TXT = "tbankNotFilterPDF.txt";
 
     public static final String ALFA_PDF_URL = "https://alfabank.servicecdn.ru/marketing/22/47/marketing/vse_cat.pdf";
-    public static final String ALFA_OUTPUT_PATH = "AlfaNotFilterPDF.txt";
+    public static final String ALFA_PDF_TXT = "AlfaNotFilterPDF.txt";
 
     /**
      * Метод для запуска процесса извлечения текстов из всех PDF-файлов.
@@ -36,16 +36,16 @@ public class PDFExtractor {
      * Извлечение текста из PDF Tinkoff и сохранение его в файл.
      */
     public static void extractTinkoffPdf() throws IOException {
-        extractTextFromPdf(TINKOFF_PDF_URL, TINKOFF_OUTPUT_PATH);
-        System.out.println("Текст успешно извлечён и сохранён в файл: " + TINKOFF_OUTPUT_PATH);
+        extractTextFromPdf(TBANK_PDF_URL, TBANK_PDF_TXT);
+        System.out.println("Текст успешно извлечён и сохранён в файл: " + TBANK_PDF_TXT);
     }
 
     /**
      * Извлечение текста из PDF Alfa и сохранение его в файл.
      */
     public static void extractAlfaPdf() throws IOException {
-        extractTextFromPdf(ALFA_PDF_URL, ALFA_OUTPUT_PATH);
-        System.out.println("Текст успешно извлечён и сохранён в файл: " + ALFA_OUTPUT_PATH);
+        extractTextFromPdf(ALFA_PDF_URL, ALFA_PDF_TXT);
+        System.out.println("Текст успешно извлечён и сохранён в файл: " + ALFA_PDF_TXT);
     }
 
     /**
