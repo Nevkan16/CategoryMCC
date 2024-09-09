@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class MCCCodeExtractor {
 
     public static void main(String[] args) {
-        String filePath = "MCC_New_Codes.txt"; // Укажите путь к вашему файлу
+        String filePath = "AlfaNotFilterPDF.txt"; // Укажите путь к вашему файлу
         try {
             List<String> mccCodeLists = extractMCCCodes(filePath);
             for (int i = 0; i < mccCodeLists.size(); i++) {

@@ -7,9 +7,9 @@ import java.util.List;
 
 import static org.example.parseTbank.FirstNameCat.getFirstNameCategory;
 
-public class ContainW {
+public class ConcatTbank {
     public static void main(String[] args) throws IOException {
-        String filePath = "MCC_New_Codes.txt"; // Путь к входному файлу
+        String filePath = "tbankNotFilterPDF.txt"; // Путь к входному файлу
         String outputFilePath = "MCC_TBank.txt"; // Путь к файлу, куда будет записан результат
 
         List<String> stringList = FileParser.parseFile(filePath);

@@ -33,15 +33,4 @@ public class FileParser {
         return result;
     }
 
-    // Метод для вывода результатов
-    public static void printParsedLines(String filePath) {
-        try {
-            List<String> parsedLines = parseFile(filePath);
-            for (String line : parsedLines) {
-                System.out.println(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -60,7 +60,7 @@ public class MCCFileParser {
 
 
     public static void main(String[] args) {
-        String filePath = "MCC_New_Codes.txt"; // Укажите путь к вашему файлу
+        String filePath = "tbankNotFilterPDF.txt"; // Укажите путь к вашему файлу
 
         try {
             List<String> mccCodes = parseFile(filePath);

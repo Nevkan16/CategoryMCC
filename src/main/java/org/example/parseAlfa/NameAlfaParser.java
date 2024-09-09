@@ -66,7 +66,7 @@ public class NameAlfaParser {
     public static void main(String[] args) {
         try {
             // Укажите путь к файлу
-            String filePath = "MCC_New_Codes.txt";
+            String filePath = "AlfaNotFilterPDF.txt";
 
             // Получаем список категорий
             List<String> categories = extractCategoriesWithMCC(filePath);
