@@ -77,7 +77,7 @@ public class MCCLookupApp {
     }
 
     // Метод для загрузки данных из файла в карту (категория -> список MCC кодов)
-    static Map<String, String> loadMCCData(String filePath) {
+    public static Map<String, String> loadMCCData(String filePath) {
         Map<String, String> mccCategoryMap = new HashMap<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -101,7 +101,7 @@ public class MCCLookupApp {
 
     // Метод для поиска всех категорий по MCC коду
     // Метод для поиска всех категорий по MCC коду
-    static List<String> findCategoriesByMCC(Map<String, String> mccCategoryMap, int mccCode) {
+    public static List<String> findCategoriesByMCC(Map<String, String> mccCategoryMap, int mccCode) {
         List<String> categories = new ArrayList<>();
 
         for (Map.Entry<String, String> entry : mccCategoryMap.entrySet()) {
