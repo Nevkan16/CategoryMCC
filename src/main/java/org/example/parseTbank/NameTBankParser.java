@@ -3,12 +3,14 @@ package org.example.parseTbank;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FirstNameCat {
-    static String category;
+public class NameTBankParser {
     public static String getFirstNameCategory(String inputFilePath) {
+        String result = null;
         try (BufferedReader br = new BufferedReader(new FileReader(inputFilePath))) {
 
             String line;
@@ -33,11 +35,11 @@ public class FirstNameCat {
                     }
                 } else if (line.matches("^[А-Яа-яA-Za-z\\s]+$")) {
                     // Строка с категорией
-                    if (category != null && mccCodes.length() > 0) {
+                    if (result != null && mccCodes.length() > 0) {
                         // Показываем предыдущую категорию
                         break; // Завершаем выполнение после первой записи
                     }
-                    category = line;
+                    result = line;
                     isCategoryLine = true;
                 } else if (line.matches("^\\d+.*")) {
                     // Строка с MCC-кодами
@@ -51,6 +53,32 @@ public class FirstNameCat {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return category;
+        return result;
     }
+
+    // Метод для парсинга файла
+    public static List<String> parseFile(String filePath) throws IOException {
+        List<String> result = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String currentLine;
+            String nextLine;
+
+            while ((currentLine = reader.readLine()) != null) {
+                currentLine = currentLine.trim(); // Убираем лишние пробелы
+
+                if (!currentLine.isEmpty() && currentLine.matches(".*\\d$")) { // Проверяем, что строка заканчивается на цифру
+                    while ((nextLine = reader.readLine()) != null) {
+                        nextLine = nextLine.trim();
+
+                        if (!nextLine.isEmpty() && !nextLine.matches("^\\d.*") && !nextLine.matches(".*\\d$")) {
+                            result.add(nextLine); // Добавляем строку, если она не начинается и не заканчивается цифрой
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
 }

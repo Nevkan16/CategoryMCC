@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MCCFileParser {
+public class MccTBankParser {
 
     public static List<String> parseFile(String filePath) throws IOException {
         List<String> mccList = new ArrayList<>();

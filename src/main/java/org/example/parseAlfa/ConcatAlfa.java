@@ -17,7 +17,7 @@ public class ConcatAlfa {
     private static void concatAndSaveAlfa(String inputFilePath, String outputFilePath) throws IOException {
         // Извлекаем категории и MCC-коды
         List<String> stringList = NameAlfaParser.extractCategoriesWithMCC(inputFilePath);
-        List<String> mccList = MCCCodeExtractor.extractMCCCodes(inputFilePath);
+        List<String> mccList = MccAlfaParser.extractMCCCodes(inputFilePath);
 
         // Используем BufferedWriter для записи в файл
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath))) {

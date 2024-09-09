@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MCCCodeExtractor {
+public class MccAlfaParser {
 
     public static void main(String[] args) {
         String filePath = "AlfaNotFilterPDF.txt"; // Укажите путь к вашему файлу

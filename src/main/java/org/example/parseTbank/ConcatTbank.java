@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import static org.example.parseTbank.FirstNameCat.getFirstNameCategory;
+import static org.example.parseTbank.NameTBankParser.getFirstNameCategory;
 
 public class ConcatTbank {
 
@@ -18,8 +18,8 @@ public class ConcatTbank {
      */
     private static void concatAndSaveTbank(String inputFilePath, String outputFilePath) throws IOException {
         // Извлекаем категории и MCC-коды
-        List<String> stringList = FileParser.parseFile(inputFilePath);
-        List<String> mccList = MCCFileParser.parseFile(inputFilePath);
+        List<String> stringList = NameTBankParser.parseFile(inputFilePath);
+        List<String> mccList = MccTBankParser.parseFile(inputFilePath);
 
         // Используем BufferedWriter для записи в файл
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFilePath))) {
