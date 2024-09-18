@@ -73,10 +73,27 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>Bot.BotMain</mainClass> <!-- Укажите нужный класс -->
+							<mainClass>org.example.Bot.BotMain</mainClass> <!-- Укажите нужный класс -->
 						</manifest>
 					</archive>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
