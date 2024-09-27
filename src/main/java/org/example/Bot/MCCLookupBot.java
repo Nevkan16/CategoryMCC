@@ -1,18 +1,16 @@
 package org.example.Bot;
 
+import org.example.Config.BotConfig;
 import org.example.MCCLookupApp;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,47 +19,31 @@ import static UpdateDataCategory.Constants.*;
 
 public class MCCLookupBot extends TelegramLongPollingBot {
     private static final Logger logger = LoggerFactory.getLogger(MCCLookupBot.class);
-    private final String botUsername;
-    private final String botToken;
     private final Map<String, String> mccCategoryMapAlfa;
     private final Map<String, String> mccCategoryMapTBank;
     private final Map<String, String> mccCategoryMapSber;
     private final Map<String, String> mccCategoryMapVtb;
-
     private final Map<Long, UserSession> userSessions = new ConcurrentHashMap<>();
+    private final BotConfig config;
 
-    public MCCLookupBot() {
-        Properties properties = new Properties();
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties")) {
-            if (input == null) {
-                System.out.println("Sorry, unable to find application.properties");
-                throw new RuntimeException("Cannot find application.properties");
-            }
-            properties.load(input);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            throw new RuntimeException("Error loading properties", ex);
-        }
-
-        this.botUsername = properties.getProperty("bot.username");
-        this.botToken = properties.getProperty("bot.token");
-
+    public MCCLookupBot(BotConfig config) {
+        this.config = config;
         mccCategoryMapAlfa = MCCLookupApp.loadMCCData(ALFA_FILE_PATH);
         mccCategoryMapTBank = MCCLookupApp.loadMCCData(TBANK_FILE_PATH);
         mccCategoryMapSber = MCCLookupApp.loadMCCData(SBER_FILE_PATH);
         mccCategoryMapVtb = MCCLookupApp.loadMCCData(VTB_FILE_PATH);
 
-        logger.info("Бот {} успешно запущен", botUsername);
+        logger.info("Бот {} успешно запущен", this.config.getBotName());
     }
 
     @Override
     public String getBotUsername() {
-        return botUsername;
+        return config.getBotName();
     }
 
     @Override
     public String getBotToken() {
-        return botToken;
+        return config.getToken();
     }
 
     @Override
