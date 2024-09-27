@@ -1,10 +1,10 @@
 package UpdateDataCategory;
 
-import org.example.DelFile.DeleteFile;
-import org.example.parseAlfa.ConcatAlfa;
-import org.example.parseSberVtb.ParseVtbSber;
-import org.example.parseTbank.ConcatTbank;
-import org.example.pdfExtract.PDFExtractor;
+import org.example.parsing.DelFile.DeleteFile;
+import org.example.parsing.parseAlfa.ConcatAlfa;
+import org.example.parsing.parseSberVtb.ParseVtbSber;
+import org.example.parsing.parseTbank.ConcatTbank;
+import org.example.parsing.pdfExtract.PDFExtractor;
 
 import static UpdateDataCategory.Constants.*;
 

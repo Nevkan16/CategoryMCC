@@ -14,10 +14,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static UpdateDataCategory.Constants.*;
 
 public class MCCLookupBot extends TelegramLongPollingBot {
+    private static final Logger logger = LoggerFactory.getLogger(MCCLookupBot.class);
     private final String botUsername;
     private final String botToken;
     private final Map<String, String> mccCategoryMapAlfa;
@@ -47,6 +50,8 @@ public class MCCLookupBot extends TelegramLongPollingBot {
         mccCategoryMapTBank = MCCLookupApp.loadMCCData(TBANK_FILE_PATH);
         mccCategoryMapSber = MCCLookupApp.loadMCCData(SBER_FILE_PATH);
         mccCategoryMapVtb = MCCLookupApp.loadMCCData(VTB_FILE_PATH);
+
+        logger.info("Бот {} успешно запущен", botUsername);
     }
 
     @Override
@@ -68,8 +73,8 @@ public class MCCLookupBot extends TelegramLongPollingBot {
             LocalDateTime dateTime = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
-            System.out.println("Time: " + formatter.format(dateTime) + " User: " +
-                    (username != null ? username : "Unknown") + " - Message: " + inputText);
+            logger.info("Time: {} User: {} - Message: {}", formatter.format(dateTime),
+                    (username != null ? username : "Unknown"), inputText);
 
             // Получаем или создаем новую сессию
             UserSession userSession = userSessions.computeIfAbsent(chatId, k -> new UserSession());

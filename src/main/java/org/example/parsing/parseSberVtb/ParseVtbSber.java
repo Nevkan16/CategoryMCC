@@ -1,4 +1,4 @@
-package org.example.parseSberVtb;
+package org.example.parsing.parseSberVtb;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
