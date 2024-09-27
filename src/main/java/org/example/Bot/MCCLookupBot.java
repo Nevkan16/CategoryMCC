@@ -76,7 +76,7 @@ public class MCCLookupBot extends TelegramLongPollingBot {
 
             // Проверяем, если пользователь ввел '/start', чтобы начать сессию
             if (inputText.equalsIgnoreCase("/start")) {
-                sendMessage(chatId, "Привет! Я бот, который показывает категории банков. Введите мсс код.");
+                sendMessage(chatId, "Привет, " + username + "!\nЯ бот, который показывает категории банков.\nВведите мсс код.");
                 userSession.setLastMessage(inputText);
             } else {
                 try {
