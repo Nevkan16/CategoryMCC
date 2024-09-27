@@ -1,25 +1,24 @@
-package org.example.Bot;
+package org.example.service;
 
+import org.example.Config.BotConfig;
 import org.example.MCCLookupApp;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static UpdateDataCategory.Constants.*;
 
+@Component
 public class MCCLookupBot extends TelegramLongPollingBot {
-    private final String botUsername;
-    private final String botToken;
+    final BotConfig config;
     private final Map<String, String> mccCategoryMapAlfa;
     private final Map<String, String> mccCategoryMapTBank;
     private final Map<String, String> mccCategoryMapSber;
@@ -27,21 +26,8 @@ public class MCCLookupBot extends TelegramLongPollingBot {
 
     private final Map<Long, UserSession> userSessions = new ConcurrentHashMap<>();
 
-    public MCCLookupBot() {
-        Properties properties = new Properties();
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties")) {
-            if (input == null) {
-                System.out.println("Sorry, unable to find application.properties");
-                throw new RuntimeException("Cannot find application.properties");
-            }
-            properties.load(input);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            throw new RuntimeException("Error loading properties", ex);
-        }
-
-        this.botUsername = properties.getProperty("bot.username");
-        this.botToken = properties.getProperty("bot.token");
+    public MCCLookupBot(BotConfig config) {
+        this.config = config;
 
         mccCategoryMapAlfa = MCCLookupApp.loadMCCData(ALFA_FILE_PATH);
         mccCategoryMapTBank = MCCLookupApp.loadMCCData(TBANK_FILE_PATH);
@@ -51,12 +37,12 @@ public class MCCLookupBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return botUsername;
+        return config.getBotName();
     }
 
     @Override
     public String getBotToken() {
-        return botToken;
+        return config.getToken();
     }
 
     @Override
@@ -76,7 +62,7 @@ public class MCCLookupBot extends TelegramLongPollingBot {
 
             // Проверяем, если пользователь ввел '/start', чтобы начать сессию
             if (inputText.equalsIgnoreCase("/start")) {
-                sendMessage(chatId, "Привет! Я бот, который показывает категории банков. Введите мсс код.");
+                sendMessage(chatId, "Привет, " + username +  "!\nЯ бот, который показывает категории банков.\nВведите мсс код.");
                 userSession.setLastMessage(inputText);
             } else {
                 try {

@@ -1,8 +1,7 @@
 package org.example;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static UpdateDataCategory.Constants.*;
@@ -77,7 +76,7 @@ public class MCCLookupApp {
     public static Map<String, String> loadMCCData(String filePath) {
         Map<String, String> mccCategoryMap = new HashMap<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 // Разбиваем строку на категорию и MCC коды

@@ -1,11 +1,11 @@
-package org.example.parseTbank;
+package org.example.parsing.parseTbank;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-import static org.example.parseTbank.NameTBankParser.getFirstNameCategory;
+import static org.example.parsing.parseTbank.NameTBankParser.getFirstNameCategory;
 
 public class ConcatTbank {
 

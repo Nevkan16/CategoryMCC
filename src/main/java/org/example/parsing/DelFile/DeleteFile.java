@@ -1,4 +1,4 @@
-package org.example.DelFile;
+package org.example.parsing.DelFile;
 
 import java.io.File;
 

@@ -1,4 +1,4 @@
-package org.example.parseAlfa;
+package org.example.parsing.parseAlfa;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

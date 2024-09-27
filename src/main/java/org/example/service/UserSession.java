@@ -1,4 +1,4 @@
-package org.example.Bot;
+package org.example.service;
 
 import java.time.LocalDateTime;
 
